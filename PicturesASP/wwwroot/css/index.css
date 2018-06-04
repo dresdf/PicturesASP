@@ -1,0 +1,104 @@
+﻿/*-------------------*/
+/*     WRAPPER       */
+/*-------------------*/
+
+#wrapper {
+    width: 100%;
+    overflow: hidden;
+    margin: 10px auto 0;
+    background: transparent;
+}
+
+
+/*-------------------*/
+/*     LEFT MENU     */
+/*-------------------*/
+
+/* Left Menu */
+#left {
+    width: 19.75%;
+    min-width: 133px;
+    float: left;
+    position: relative;
+    background: #FFFFFF;
+}
+
+    #left .menu {
+        width: 100%;
+        border-top: 1px solid #eaeaea;
+    }
+
+        #left .menu .year {
+            display: block;
+            height: 35px;
+            line-height: 35px;
+            border-bottom: 1px solid #BEBEBE;
+            border-top: 1px solid #BEBEBE;
+            text-align: center;
+            font-weight: bold;
+            font-size: 20px;
+            background: url('../css/images/bg.jpg') repeat #fff;
+        }
+
+        #left .menu li a {
+            display: block;
+            height: 35px;
+            line-height: 35px;
+            padding-left: 22px;
+            border-bottom: 1px solid #eaeaea;
+        }
+
+            #left .menu li a.active {
+                color: #0285DA;
+                border-right: 1px solid #fff;
+            }
+
+            #left .menu li a.closed {
+                background: url("../css/images/sprite.png") no-repeat scroll 36px -231px transparent;
+            }
+
+            #left .menu li a.opened {
+                background: url("../css/images/sprite.png") no-repeat scroll 46px -257px transparent;
+            }
+
+        #left .menu li .sub-menu li a {
+            padding-left: 38px;
+        }
+
+        #left .menu .sub-menu.closed {
+            display: none;
+        }
+
+
+/*-------------------*/
+/*   RIGHT CONTENT   */
+/*-------------------*/
+
+/* Thumbnail Gallery Content*/
+#right {
+    width: 80%;
+    float: right;
+    /*background: #FFFFFF;*/
+}
+
+    #right .thumbnails {
+        overflow: hidden;
+        padding: 10px 0 0 32px;
+    }
+
+        #right .thumbnails li {
+            float: left;
+            margin: 0 21px 18px 0;
+        }
+
+            #right .thumbnails li a {
+                border: 1px solid #eaeaea;
+                padding: 2px;
+                background: #f2f2f2;
+                display: block;
+            }
+
+                #right .thumbnails li a img {
+                    width: 80px;
+                    height: 80px;
+                }

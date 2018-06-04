@@ -1,0 +1,58 @@
+﻿@model PicturesASP.Models.Folder
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div id="wrapper">
+    <div id="left">
+        <ul class="menu">
+            @foreach (Folder item in Model.SubFolders)
+            {
+                <li>
+                    <a asp-area="" asp-action="Index" asp-controller="Home" id="@item.Name" class="closed">@item.Name</a>
+                    @if (item.HasChildren)
+                    {
+                        <ul class="sub-menu closed">
+                            @foreach (Folder subfolder in item.SubFolders)
+                            {
+                                <li><a asp-area="" asp-action="Index" asp-controller="Home" asp-route-path="@subfolder.UrlName">@subfolder.Name</a></li>
+                            }
+                        </ul>
+                    }
+                </li>
+
+            }
+
+        </ul>
+    </div>
+
+
+    <div id="right">
+        <ul id="thumbs" class="thumbnails">
+
+            @if (Model.Images.Count() > 0)
+            {
+                foreach (var item in Model.Images)
+                {
+                    <li>
+                        <a href="@item.Link"><img src="@item.Link" /></a>
+                    </li>
+                }
+            }
+            else
+            {
+                <img id="placeholder" src="~/css/images/47062.jpg" />
+            }
+
+
+
+        </ul>
+    </div>
+</div>
+
+@section Styles {
+    <link href="~/css/index.css" rel="stylesheet" />
+}
+@section Scripts {
+
+}
