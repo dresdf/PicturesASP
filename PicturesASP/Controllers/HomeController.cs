@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using PicturesASP.Models;
+using PicturesASP.Utils;
 
 namespace PicturesASP.Controllers
 {
@@ -20,96 +21,49 @@ namespace PicturesASP.Controllers
         }
         public IActionResult Index(string path)
         {
-            string root = env.WebRootPath + "\\gallery";
+            string root = "gallery";
 
-            Folder gallery = new Folder()
+            Folder rootFolder = new Folder();          
+            if (String.IsNullOrEmpty(path))
             {
-                SubFolders = GetFolders(root),
-                Images = new List<Image>()
-            };
-
-            if (!String.IsNullOrEmpty(path))
+                rootFolder.SubFolders = DisplayUtils.GetFolders(env, root);
+                rootFolder.Images = DisplayUtils.GetDisplayImages(env, root);
+                string dirPath = env.WebRootPath + "\\gallery" + "\\" + path;
+                rootFolder.CurrentFolder = dirPath;
+            }
+            else
             {
-                gallery.Images = GetDisplayImages(path);
+                rootFolder.SubFolders = DisplayUtils.GetFolders(env,path);
+                rootFolder.Images = DisplayUtils.GetDisplayImages(env, path);
+                string dirPath = env.WebRootPath + "\\gallery" + "\\" + path;
+                rootFolder.CurrentFolder = dirPath;
             }
 
-
-            return View(gallery);
-        }
-
-        //create list of folders
-        private List<Folder> GetFolders(string path)
-        {
-            List<Folder> result = new List<Folder>();
-            string parent = new DirectoryInfo(path).Name;
-            var folders = Directory.EnumerateDirectories(path);
-            foreach (var item in folders)
-            {
-                Folder ret = new Folder
-                {
-                    Name = new DirectoryInfo(item).Name,
-                    UrlName = parent + "\\" + new DirectoryInfo(item).Name
-                };
-                var subfolders = Directory.EnumerateDirectories(item);
-
-                if (subfolders.Count() > 0)
-                {
-                    ret.HasChildren = true;
-                    ret.SubFolders = GetFolders(item);
-                }
-                result.Add(ret);
-            }
-            return result;
-        }
-
-        //get list of images to display
-        private List<Image> GetDisplayImages(string dirName)
-        {
-            List<Image> images = new List<Image>();
-            string dirPath = env.WebRootPath + "\\gallery" + "\\" + dirName;
-            string dirLink = "gallery" + "\\" + dirName;
-
-
-            var folder = Directory.EnumerateFiles(dirPath);
-            foreach (var item in folder)
-            {
-                Image img = new Image()
-                {
-                    Name = new DirectoryInfo(item).Name,
-
-                };
-                img.Link = dirLink + "\\" + img.Name;
-                images.Add(img);
-            }
-
-            return images;
-        }
-
-
-
-
-
-
-
-
-
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
+            return View(rootFolder);
         }
 
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [HttpGet]
+        public IActionResult Create(string currentFolder)
+        {
+            Folder ret = new Folder()
+            {
+                CurrentFolder = env.WebRootPath + "\\gallery" + "\\" + currentFolder
+            };
+            return View(ret);
+        }
+
+        [HttpPost]
+        public IActionResult CreateFolder(string currentFolder, string name)
+        {
+            string path = currentFolder + "\\" + name;
+            var newFolder = Directory.CreateDirectory(path);
+
+            return RedirectToAction("Index");
         }
     }
 }

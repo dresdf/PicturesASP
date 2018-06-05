@@ -1,0 +1,16 @@
+﻿@model PicturesASP.Models.Folder
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<div>
+    <p>Login using form below:</p>
+    <form asp-action="CreateFolder" asp-controller="Home" method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <input id="current-folder" asp-for="CurrentFolder" value="@Model.CurrentFolder" hidden /><br />
+        Username: <input asp-for="Name" value="" required /><br />
+        <input type="submit" value="Create" />
+    </form>
+</div>

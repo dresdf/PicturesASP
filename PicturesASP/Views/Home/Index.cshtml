@@ -4,31 +4,20 @@
 }
 
 <div id="wrapper">
-    <div id="left">
-        <ul class="menu">
-            @foreach (Folder item in Model.SubFolders)
-            {
-                <li>
-                    <a asp-area="" asp-action="Index" asp-controller="Home" id="@item.Name" class="closed">@item.Name</a>
-                    @if (item.HasChildren)
-                    {
-                        <ul class="sub-menu closed">
-                            @foreach (Folder subfolder in item.SubFolders)
-                            {
-                                <li><a asp-area="" asp-action="Index" asp-controller="Home" asp-route-path="@subfolder.UrlName">@subfolder.Name</a></li>
-                            }
-                        </ul>
-                    }
-                </li>
-
-            }
-
-        </ul>
-    </div>
-
 
     <div id="right">
-        <ul id="thumbs" class="thumbnails">
+        <ul id="folders" class="thumbnails">
+            @if (Model.SubFolders.Count() > 0)
+            {@foreach (Folder item in Model.SubFolders)
+                {
+                    <li>
+                        <a asp-action="Index" asp-controller="Home" asp-route-path="@item.UrlName" style="text-align:center"><img src="~/css/images/500X500.gif" /><br/> <span >Lalala</span></a>
+                    </li>
+                }
+        }
+
+        </ul>
+        <ul id="pictures" class="thumbnails">
 
             @if (Model.Images.Count() > 0)
             {
@@ -39,13 +28,6 @@
                     </li>
                 }
             }
-            else
-            {
-                <img id="placeholder" src="~/css/images/47062.jpg" />
-            }
-
-
-
         </ul>
     </div>
 </div>

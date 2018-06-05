@@ -13,6 +13,7 @@ namespace PicturesASP.Models
         public bool HasChildren { get; set; }
         public List<Folder> SubFolders { get; set; }
         public List<Image> Images { get; set; }
+        public string CurrentFolder { get; set; }
 
     }
 }

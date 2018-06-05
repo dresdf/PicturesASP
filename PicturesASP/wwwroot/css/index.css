@@ -41,7 +41,7 @@
         }
 
         #left .menu li a {
-            display: block;
+            /*display: block;*/
             height: 35px;
             line-height: 35px;
             padding-left: 22px;
@@ -54,11 +54,11 @@
             }
 
             #left .menu li a.closed {
-                background: url("../css/images/sprite.png") no-repeat scroll 36px -231px transparent;
+                
             }
 
             #left .menu li a.opened {
-                background: url("../css/images/sprite.png") no-repeat scroll 46px -257px transparent;
+                background-color:lightgray;
             }
 
         #left .menu li .sub-menu li a {
