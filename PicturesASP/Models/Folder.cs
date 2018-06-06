@@ -10,10 +10,12 @@ namespace PicturesASP.Models
     {
         public string Name { get; set; }
         public string UrlName { get; set; }
+        public string CurrentFolder { get; set; }
+        public string Parent { get; set; }
         public bool HasChildren { get; set; }
         public List<Folder> SubFolders { get; set; }
         public List<Image> Images { get; set; }
-        public string CurrentFolder { get; set; }
+
 
     }
 }

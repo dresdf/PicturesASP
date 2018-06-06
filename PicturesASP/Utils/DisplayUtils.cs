@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace PicturesASP.Utils
 {
@@ -14,24 +13,32 @@ namespace PicturesASP.Utils
         public static List<Folder> GetFolders(IHostingEnvironment env, string path)
         {
             List<Folder> result = new List<Folder>();
-            string link = env.WebRootPath + "\\" + path;
-            var folders = Directory.EnumerateDirectories(link);
-            foreach (var item in folders)
+            try
             {
-                Folder ret = new Folder
+                string link = env.WebRootPath + "\\" + path;
+                var folders = Directory.EnumerateDirectories(link);
+                foreach (var item in folders)
                 {
-                    Name = new DirectoryInfo(item).Name
+                    Folder ret = new Folder
+                    {
+                        Name = new DirectoryInfo(item).Name
+                    };
+                    ret.UrlName = path + "\\" + ret.Name;
+                    var subfolders = Directory.EnumerateDirectories(item);
 
-                };
-                ret.UrlName = path + "\\" + ret.Name;
-                var subfolders = Directory.EnumerateDirectories(item);
-
-                if (subfolders.Count() > 0)
-                {
-                    ret.HasChildren = true;
-                    ret.SubFolders = GetFolders(env, ret.UrlName);
+                    if (subfolders.Count() > 0)
+                    {
+                        ret.HasChildren = true;
+                        ret.SubFolders = GetFolders(env, ret.UrlName);
+                    }
+                    result.Add(ret);
                 }
-                result.Add(ret);
+
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.StackTrace);
+                return result;
             }
             return result;
         }

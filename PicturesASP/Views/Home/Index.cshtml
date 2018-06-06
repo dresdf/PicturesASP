@@ -4,33 +4,38 @@
 }
 
 <div id="wrapper">
-
-    <div id="right">
-        <ul id="folders" class="thumbnails">
-            @if (Model.SubFolders.Count() > 0)
-            {@foreach (Folder item in Model.SubFolders)
-                {
-                    <li>
-                        <a asp-action="Index" asp-controller="Home" asp-route-path="@item.UrlName" style="text-align:center"><img src="~/css/images/500X500.gif" /><br/> <span >Lalala</span></a>
-                    </li>
-                }
-        }
-
-        </ul>
-        <ul id="pictures" class="thumbnails">
-
-            @if (Model.Images.Count() > 0)
+    <p>Current Folder: @Model.CurrentFolder</p>
+    <p>Parent Folder: @Model.Parent</p>
+    <a asp-action="Index" asp-controller="Home" asp-route-path="@Model.Parent" style="text-align:center">BACK</a>
+    <hr>
+    <a asp-action="Create" asp-controller="Home" asp-route-currentFolder="@Model.CurrentFolder" style="text-align:center">ADD NEW FOLDER</a>
+    <br />
+    <a asp-action="Upload" asp-controller="Home" asp-route-currentFolder="@Model.CurrentFolder" style="text-align:center">Upload Images</a>
+    <ul class="thumbnails folders">
+        @if (Model.SubFolders.Count() > 0)
+        {@foreach (Folder item in Model.SubFolders)
             {
-                foreach (var item in Model.Images)
-                {
-                    <li>
-                        <a href="@item.Link"><img src="@item.Link" /></a>
-                    </li>
-                }
+                <li>
+                    <a asp-action="Index" asp-controller="Home" asp-route-path="@item.UrlName" style="text-align:center"><img src="~/css/images/folder.png" /><br /> <span>@item.Name</span></a>
+                </li>
             }
-        </ul>
-    </div>
+    }
+
+    </ul>
+    <ul class="thumbnails">
+
+        @if (Model.Images.Count() > 0)
+        {
+            foreach (var item in Model.Images)
+            {
+                <li>
+                    <a href="@item.Link"><img src="@item.Link" /></a>
+                </li>
+            }
+        }
+    </ul>
 </div>
+
 
 @section Styles {
     <link href="~/css/index.css" rel="stylesheet" />

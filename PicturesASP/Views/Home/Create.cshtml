@@ -5,12 +5,17 @@
 
 <h2>Create</h2>
 
+<p>Current Folder: @Model.CurrentFolder</p>
+<p>Parent Folder: @Model.Parent</p>
+<a asp-action="Index" asp-controller="Home" asp-route-path="@Model.CurrentFolder" style="text-align:center">BACK</a>
+<hr>
+
 <div>
-    <p>Login using form below:</p>
-    <form asp-action="CreateFolder" asp-controller="Home" method="post">
+    
+    <form asp-action="Create" asp-controller="Home" method="post">
         <div asp-validation-summary="All" class="text-danger"></div>
         <input id="current-folder" asp-for="CurrentFolder" value="@Model.CurrentFolder" hidden /><br />
-        Username: <input asp-for="Name" value="" required /><br />
+        Folder Name: <input asp-for="Name" value="" required /><br />
         <input type="submit" value="Create" />
     </form>
 </div>

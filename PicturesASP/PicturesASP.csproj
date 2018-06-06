@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CoreCompat.System.Drawing.v2" Version="5.2.0-preview1-r131" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.8" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.3" />
   </ItemGroup>
@@ -14,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\gallery\Folder 1\Subfolder 1-1\" />
     <Folder Include="wwwroot\gallery\Folder 2\Subfolder 2-2\" />
     <Folder Include="wwwroot\gallery\Folder 2\Subfolder 2-1\" />
     <Folder Include="wwwroot\gallery\Folder 2\Subfolder 2-3\" />
