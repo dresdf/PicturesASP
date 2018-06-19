@@ -19,11 +19,7 @@ namespace PicturesASP.Utils
                 var folders = Directory.EnumerateDirectories(link);
                 foreach (var item in folders)
                 {
-                    Folder ret = new Folder
-                    {
-                        Name = new DirectoryInfo(item).Name
-                    };
-                    ret.UrlName = path + "\\" + ret.Name;
+                    Folder ret = new Folder(new DirectoryInfo(item).Name, path);
                     var subfolders = Directory.EnumerateDirectories(item);
 
                     if (subfolders.Count() > 0)
@@ -53,13 +49,7 @@ namespace PicturesASP.Utils
                 var folder = Directory.EnumerateFiles(folderUrl);
                 foreach (var item in folder)
                 {
-                    Image img = new Image
-                    {
-                        Name = new DirectoryInfo(item).Name,
-
-                    };
-                    //DO NOT prefix link with WebRoothPath. Error in VS
-                    img.Link = dirUrlName + "\\" + img.Name;
+                    Image img = new Image(new DirectoryInfo(item).Name, dirUrlName);
                     images.Add(img);
                 }
             }

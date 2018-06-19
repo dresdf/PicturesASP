@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PicturesASP.Models;
 using PicturesASP.Utils;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace PicturesASP.Controllers
 {
@@ -20,6 +18,8 @@ namespace PicturesASP.Controllers
         {
             this.env = environment;
         }
+
+        [HttpGet]
         public IActionResult Index(string path)
         {
             string root = "gallery";
@@ -45,23 +45,9 @@ namespace PicturesASP.Controllers
             return View(rootFolder);
         }
 
-        //load create page
-        [HttpGet]
-        public IActionResult Create(string currentFolder)
-        {
-            Folder ret = new Folder()
-            {
-                CurrentFolder = currentFolder,
-                Name = new DirectoryInfo(currentFolder).Name
-            };
-            ret.SubFolders = DisplayUtils.GetFolders(env, currentFolder);
-            ret.Parent = currentFolder.Replace("\\" + ret.Name, "");
-            return View(ret);
-        }
-
         //create and save folder 
         [HttpPost]
-        public IActionResult Create(string currentFolder, string name)
+        public IActionResult CreateFolder(string currentFolder, string name)
         {
             string path = env.WebRootPath + "\\" + currentFolder + "\\" + name;
             var newFolder = Directory.CreateDirectory(path);
@@ -69,20 +55,9 @@ namespace PicturesASP.Controllers
             return RedirectToAction("Index", "Home", new { path = currentFolder });
         }
 
-        //load upload page
-        [HttpGet]
-        public IActionResult Upload(string currentFolder)
-        {
-            Folder ret = new Folder()
-            {
-                CurrentFolder = currentFolder,
-            };
-            return View(ret);
-        }
-
         //create and save images. Redirect to folder view
         [HttpPost]
-        public async Task<IActionResult> Upload(string currentFolder, ICollection<IFormFile> files)
+        public async Task<IActionResult> UploadImages(string currentFolder, ICollection<IFormFile> files)
         {
             try
             {
@@ -93,11 +68,10 @@ namespace PicturesASP.Controllers
                         continue;
                     }
 
-                    //TODO: check if file with same name exists
-
                     string fileName = Path.GetFileName(file.FileName);
-                    string name = Path.GetFileNameWithoutExtension(fileName);
+                    fileName = ImageUtils.RenameDuplicates(env, currentFolder, fileName);
                     string filePath = env.WebRootPath + "\\" + currentFolder + "\\" + fileName;
+
                     using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
                     {
                         await file.CopyToAsync(fileStream);
@@ -109,6 +83,21 @@ namespace PicturesASP.Controllers
             {
                 return View(new Folder { CurrentFolder = currentFolder });
             }
+
+            return RedirectToAction("Index", "Home", new { path = currentFolder });
+        }
+
+        public IActionResult DeleteImage(string currentFolder, string link)
+        {
+            string filePath = env.WebRootPath + "\\" + link;
+            System.IO.File.Delete(filePath);
+            return RedirectToAction("Index", "Home", new { path = currentFolder });
+        }
+
+        public IActionResult DeleteFolder(string folderPath, string currentFolder)
+        {
+            string path = env.WebRootPath + "\\" + folderPath;
+            Directory.Delete(path, true);
 
             return RedirectToAction("Index", "Home", new { path = currentFolder });
         }

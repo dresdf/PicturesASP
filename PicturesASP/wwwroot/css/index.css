@@ -9,66 +9,6 @@
     background: transparent;
 }
 
-
-/*-------------------*/
-/*     LEFT MENU     */
-/*-------------------*/
-
-/* Left Menu */
-#left {
-    width: 19.75%;
-    min-width: 133px;
-    float: left;
-    position: relative;
-    background: #FFFFFF;
-}
-
-    #left .menu {
-        width: 100%;
-        border-top: 1px solid #eaeaea;
-    }
-
-        #left .menu .year {
-            display: block;
-            height: 35px;
-            line-height: 35px;
-            border-bottom: 1px solid #BEBEBE;
-            border-top: 1px solid #BEBEBE;
-            text-align: center;
-            font-weight: bold;
-            font-size: 20px;
-            background: url('../css/images/bg.jpg') repeat #fff;
-        }
-
-        #left .menu li a {
-            /*display: block;*/
-            height: 35px;
-            line-height: 35px;
-            padding-left: 22px;
-            border-bottom: 1px solid #eaeaea;
-        }
-
-            #left .menu li a.active {
-                color: #0285DA;
-                border-right: 1px solid #fff;
-            }
-
-            #left .menu li a.closed {
-            }
-
-            #left .menu li a.opened {
-                background-color: lightgray;
-            }
-
-        #left .menu li .sub-menu li a {
-            padding-left: 38px;
-        }
-
-        #left .menu .sub-menu.closed {
-            display: none;
-        }
-
-
 /* Thumbnail Gallery Content*/
 .thumbnails {
     overflow: hidden;
@@ -91,3 +31,91 @@
                 height: 80px;
             }
 
+.admin {
+    margin: 40px 0 20px 0;
+    padding: 10px;
+    background: lightgray;
+    border-radius: 5px;
+    position: relative;
+}
+
+
+
+    .admin input {
+        padding: 3px 7px;
+        font: inherit;
+        border: 1px solid gray;
+    }
+
+        .admin input[type=text] {
+            width: 220px;
+        }
+
+        .admin input[type=file] {
+            background: lightgray;
+            border: none;
+            /*width: 220px;*/
+            display: inline;
+        }
+
+        .admin input[type=submit] {
+            background-color: #1377d0;
+            color: white;
+            cursor: pointer;
+        }
+
+        .admin input[disabled] {
+            background-color: #999;
+            color: #f1f1f1;
+            cursor: progress;
+        }
+
+    .admin .delete input {
+        font-family: verdana;
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        background: transparent;
+        color: crimson;
+        font-size: 1.3em;
+        font-weight: bold;
+        border: 0;
+        padding: 0;
+    }
+
+.tagCreate:before {
+    content: "Create New Folder";
+    font-weight: bold;
+    display: block;
+    position: absolute;
+    top: -19px;
+    background: lightgray;
+    padding: 0 10px;
+    border-radius: 3px;
+}
+
+.tagUpload:before {
+    content: "Upload Images";
+    font-weight: bold;
+    display: block;
+    position: absolute;
+    top: -19px;
+    background: lightgray;
+    padding: 0 10px;
+    border-radius: 3px;
+}
+
+.deleteBtn {
+    color: red;
+    text-align: right;
+    margin: 0px;
+    margin-bottom: -10px;
+    padding: 0px;
+}
+
+.deleteBtnImg {
+    color: red;
+    text-align: right;
+    margin: 0px;
+    padding: 0px;
+}

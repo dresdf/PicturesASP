@@ -104,3 +104,8 @@ hr {
     border-style: inset;
     border-width: 0.5px;
 }
+
+#wrapper {
+    padding-left: 5%;
+    padding-right: 5%;
+}

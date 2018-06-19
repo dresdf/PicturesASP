@@ -4,36 +4,56 @@
 }
 
 <div id="wrapper">
-    <p>Current Folder: @Model.CurrentFolder</p>
-    <p>Parent Folder: @Model.Parent</p>
-    <a asp-action="Index" asp-controller="Home" asp-route-path="@Model.Parent" style="text-align:center">BACK</a>
-    <hr>
-    <a asp-action="Create" asp-controller="Home" asp-route-currentFolder="@Model.CurrentFolder" style="text-align:center">ADD NEW FOLDER</a>
-    <br />
-    <a asp-action="Upload" asp-controller="Home" asp-route-currentFolder="@Model.CurrentFolder" style="text-align:center">Upload Images</a>
+
+    @if (!Model.CurrentFolder.Equals("gallery"))
+    {
+        @Html.ActionLink("<< Back to " + Model.Parent, "Index", "Home", new { path = Model.Parent })
+    }
+
+    <div>
+        <form class="admin tagCreate" asp-action="CreateFolder" asp-controller="Home" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <input id="current-folder" asp-for="CurrentFolder" value="@Model.CurrentFolder" hidden />
+            Name: <input asp-for="Name" value="" required />
+            <input type="submit" value="Create" />
+        </form>
+    </div>
+
     <ul class="thumbnails folders">
         @if (Model.SubFolders.Count() > 0)
         {@foreach (Folder item in Model.SubFolders)
             {
                 <li>
+                    <a asp-action="DeleteFolder" asp-controller="Home" asp-route-folderPath="@item.UrlName" asp-route-currentFolder="@Model.CurrentFolder" class="deleteBtn"><span class="fas fa-times"></span></a>
                     <a asp-action="Index" asp-controller="Home" asp-route-path="@item.UrlName" style="text-align:center"><img src="~/css/images/folder.png" /><br /> <span>@item.Name</span></a>
                 </li>
             }
     }
 
     </ul>
+
     <ul class="thumbnails">
 
         @if (Model.Images.Count() > 0)
         {
+
             foreach (var item in Model.Images)
             {
-                <li>
-                    <a href="@item.Link"><img src="@item.Link" /></a>
-                </li>
+        <li>
+            <a asp-action="DeleteImage" asp-controller="Home" asp-route-currentFolder="@Model.CurrentFolder" asp-route-link="@item.Link" class="deleteBtnImg"><span class="fas fa-trash-alt"></span></a>
+            <a href="@item.Link"><img src="@item.Link" /></a>
+
+        </li>
             }
         }
     </ul>
+    <div>
+        <form class="admin tagUpload" asp-action="UploadImages" asp-controller="Home" method="post" enctype="multipart/form-data">
+            <input id="current-folder" asp-for="CurrentFolder" value="@Model.CurrentFolder" hidden />
+            <input type="file" id="files" aria-label="Upload photo" name="files" required multiple accept="image/*" />
+            <input type="submit" data-progress="Uploading..." id="btnfiles" value="Upload" />
+        </form>
+    </div>
 </div>
 
 
@@ -41,5 +61,4 @@
     <link href="~/css/index.css" rel="stylesheet" />
 }
 @section Scripts {
-
 }
