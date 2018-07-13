@@ -27,8 +27,8 @@
         }
 
             .thumbnails li a img {
-                width: 80px;
-                height: 80px;
+                width: 150px;
+                height: 150px;
             }
 
 .admin {
@@ -54,7 +54,6 @@
         .admin input[type=file] {
             background: lightgray;
             border: none;
-            /*width: 220px;*/
             display: inline;
         }
 
@@ -70,27 +69,26 @@
             cursor: progress;
         }
 
-    .admin .delete input {
-        font-family: verdana;
-        position: absolute;
-        right: 10px;
-        top: 10px;
-        background: transparent;
-        color: crimson;
-        font-size: 1.3em;
-        font-weight: bold;
-        border: 0;
-        padding: 0;
+    .admin form {
+        display: block;
     }
+
+.tagCreate {
+    background-color: red;
+}
+
+.tagUpload {
+    background-color: green;
+}
 
 .tagCreate:before {
     content: "Create New Folder";
     font-weight: bold;
     display: block;
     position: absolute;
-    top: -19px;
+    top: -25px;
     background: lightgray;
-    padding: 0 10px;
+    padding: 5px 10px;
     border-radius: 3px;
 }
 
@@ -99,9 +97,9 @@
     font-weight: bold;
     display: block;
     position: absolute;
-    top: -19px;
+    top: -25px;
     background: lightgray;
-    padding: 0 10px;
+    padding: 5px 10px;
     border-radius: 3px;
 }
 
@@ -119,3 +117,13 @@
     margin: 0px;
     padding: 0px;
 }
+
+.backLink {
+    font-weight: bold;
+    font-size:larger;
+    display: block;
+    padding: 10px 10px;
+    border-radius: 3px;
+    background-color:azure;
+}
+

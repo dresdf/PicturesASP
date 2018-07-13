@@ -28,7 +28,7 @@ namespace PicturesASP.Utils
                     //file with same name exists
                     string name = Path.GetFileNameWithoutExtension(fileName);
                     string extension = fileName.Replace(name, "");
-                    name = name + "#";
+                    name = name + "c";
                     fileName = name + extension;
                     ret = RenameDuplicates(env, currentFolder, fileName);
                 }

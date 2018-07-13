@@ -50,6 +50,7 @@ namespace PicturesASP.Utils
                 foreach (var item in folder)
                 {
                     Image img = new Image(new DirectoryInfo(item).Name, dirUrlName);
+                    img.DisplayLink = env.WebRootPath + "\\" + img.Link;
                     images.Add(img);
                 }
             }

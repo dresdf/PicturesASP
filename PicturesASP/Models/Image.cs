@@ -10,6 +10,7 @@ namespace PicturesASP.Models
         public string Name { get; set; }
         public string Link { get; set; }
         public string ParentFolder { get; set; }
+        public string DisplayLink { get; set; }
 
         public Image() { }
 

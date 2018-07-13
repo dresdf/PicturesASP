@@ -8,8 +8,6 @@
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-
-
     @RenderSection("Styles", required: false)
 </head>
 <body>
@@ -24,17 +22,14 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                    @*<li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>*@
                 </ul>
             </div>
         </div>
     </nav>
     <div class="body-content">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; 2018 - PicturesASP</p>
-        </footer>
+        
     </div>
 
 
