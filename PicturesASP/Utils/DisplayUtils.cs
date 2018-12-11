@@ -9,6 +9,8 @@ namespace PicturesASP.Utils
 {
     public class DisplayUtils
     {
+        private static readonly string[] extensions = { ".jpg", ".jpeg", ".gif", ".png" };
+
         //create list of folders
         public static List<Folder> GetFolders(IHostingEnvironment env, string path)
         {
@@ -19,17 +21,20 @@ namespace PicturesASP.Utils
                 var folders = Directory.EnumerateDirectories(link);
                 foreach (var item in folders)
                 {
+                    string dirName = new DirectoryInfo(item).Name;
+                    if (dirName.ToLowerInvariant().Equals("thumbnails"))
+                    {
+                        continue;
+                    }
                     Folder ret = new Folder(new DirectoryInfo(item).Name, path);
                     var subfolders = Directory.EnumerateDirectories(item);
 
                     if (subfolders.Count() > 0)
                     {
-                        ret.HasChildren = true;
-                        ret.SubFolders = GetFolders(env, ret.UrlName);
+                        ret.SubFolders = GetFolders(env, ret.CurrentFolder);
                     }
                     result.Add(ret);
                 }
-
             }
             catch (Exception ex)
             {
@@ -50,12 +55,39 @@ namespace PicturesASP.Utils
                 foreach (var item in folder)
                 {
                     Image img = new Image(new DirectoryInfo(item).Name, dirUrlName);
-                    img.DisplayLink = env.WebRootPath + "\\" + img.Link;
                     images.Add(img);
                 }
             }
             catch (DirectoryNotFoundException) { return images; }
             return images;
+        }
+
+        //check if file is image type
+        public static bool IsImageFile(string file)
+        {
+            string ext = Path.GetExtension(file);
+            return extensions.Contains(ext, StringComparer.OrdinalIgnoreCase);
+        }
+
+        //search target for files with same name. renames the new file
+        public static string RenameDuplicates(IHostingEnvironment env, string currentFolder, string fileName)
+        {
+            string ret = fileName;
+            string filePath = env.WebRootPath + "\\" + currentFolder + "\\" + fileName;
+            var folderFiles = Directory.EnumerateFiles(env.WebRootPath + "\\" + currentFolder);
+            foreach (string item in folderFiles)
+            {
+                if (item.Equals(filePath))
+                {
+                    //file with same name exists
+                    string name = Path.GetFileNameWithoutExtension(fileName);
+                    string extension = fileName.Replace(name, "");
+                    name = name + "x";
+                    fileName = name + extension;
+                    ret = RenameDuplicates(env, currentFolder, fileName);
+                }
+            }
+            return ret;
         }
     }
 }

@@ -30,8 +30,6 @@
                 </td>
             </tr>
         </table>
-
-
     </div>
     @if (Model.SubFolders.Count() > 0)
     {
@@ -39,8 +37,8 @@
             @foreach (Folder item in Model.SubFolders)
             {
                 <li>
-                    <a asp-action="DeleteFolder" asp-controller="Home" asp-route-folderPath="@item.UrlName" asp-route-currentFolder="@Model.CurrentFolder" class="deleteBtn"><span class="fas fa-times"></span></a>
-                    <a asp-action="Index" asp-controller="Home" asp-route-path="@item.UrlName" style="text-align:center"><img src="~/css/images/folder.png" /><br /> <span>@item.Name</span></a>
+                    <a asp-action="DeleteFolder" asp-controller="Home" asp-route-folderPath="@item.CurrentFolder" asp-route-currentFolder="@Model.CurrentFolder" class="deleteBtn"><span class="fas fa-times"></span></a>
+                    <a asp-action="Index" asp-controller="Home" asp-route-path="@item.CurrentFolder" style="text-align:center"><img src="~/css/images/folder.png" /><br /> <span>@item.Name</span></a>
                 </li>
             }
         </ul>
@@ -54,7 +52,7 @@
             {
                 <li>
                     <a asp-action="DeleteImage" asp-controller="Home" asp-route-currentFolder="@Model.CurrentFolder" asp-route-link="@item.Link" class="deleteBtnImg"><span class="fas fa-trash-alt"></span></a>
-                    <a><img src="@item.Link" /></a>
+                    <a class="photoImg"><img src="@item.Link" /></a>
                 </li>
             }
         </ul>

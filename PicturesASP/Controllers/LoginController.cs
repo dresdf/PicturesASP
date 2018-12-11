@@ -23,27 +23,34 @@ namespace PicturesASP.Controllers
         }
         public async Task<IActionResult> Index(string username, string password, bool rememberMe)
         {
+            //hack for dev. remove in prod
+            return RedirectToAction("Index", "Home");
 
-            //TODO: search DB and find user with same username
-            User user = new User { Password = password };
-            
-            if (user != null && VerifyHashedPassword(password, user))
-            {
-                var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
-                identity.AddClaim(new Claim(ClaimTypes.Name, conf["user:username"]));
+            //if (String.IsNullOrEmpty(username) || String.IsNullOrEmpty(password))
+            //{
+            //    return View();
+            //}
 
-                var principle = new ClaimsPrincipal(identity);
-                var properties = new AuthenticationProperties { IsPersistent = rememberMe };
-                await HttpContext.SignInAsync(principle, properties);
+            ////TODO: search DB and find user with same username
+            //User user = new User { Password = conf["user:password"] };
 
-                return RedirectToAction("Index", "Home");
-            }
-            return View();
+            //if (user != null && VerifyHashedPassword(password, user))
+            //{
+            //    var identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+            //    identity.AddClaim(new Claim(ClaimTypes.Name, conf["user:username"]));
+
+            //    var principle = new ClaimsPrincipal(identity);
+            //    var properties = new AuthenticationProperties { IsPersistent = rememberMe };
+            //    await HttpContext.SignInAsync(principle, properties);
+
+            //    return RedirectToAction("Index", "Home");
+            //}
+            //return View();
         }
 
 
 
-
+        //add saved salt and check password
         private bool VerifyHashedPassword(string password, User user)
         {
             byte[] saltBytes = Encoding.UTF8.GetBytes(conf["user:salt"]);

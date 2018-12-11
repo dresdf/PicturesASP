@@ -6,6 +6,7 @@ using PicturesASP.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace PicturesASP.Controllers
@@ -13,10 +14,12 @@ namespace PicturesASP.Controllers
     public class HomeController : Controller
     {
         private readonly IHostingEnvironment env;
+        private readonly ImageProcessor imageProcessor;
 
-        public HomeController(IHostingEnvironment environment)
+        public HomeController(IHostingEnvironment environment, ImageProcessor imgProc)
         {
             this.env = environment;
+            this.imageProcessor = imgProc;
         }
 
         [HttpGet]
@@ -29,18 +32,18 @@ namespace PicturesASP.Controllers
             {
                 rootFolder.SubFolders = DisplayUtils.GetFolders(env, root);
                 rootFolder.Images = DisplayUtils.GetDisplayImages(env, root);
-                string dirPath = env.WebRootPath + "\\gallery";
                 rootFolder.CurrentFolder = root;
             }
             else
             {
-                rootFolder.SubFolders = DisplayUtils.GetFolders(env, path);
-                rootFolder.Images = DisplayUtils.GetDisplayImages(env, path);
                 string dirPath = env.WebRootPath + "\\" + path;
-                rootFolder.CurrentFolder = path;
                 string rootName = new DirectoryInfo(dirPath).Name;
                 string parent = path.Replace("\\" + rootName, "");
-                rootFolder.Parent = parent;
+                rootFolder = new Folder(rootName, parent)
+                {
+                    SubFolders = DisplayUtils.GetFolders(env, path),
+                    Images = DisplayUtils.GetDisplayImages(env, path),
+                };
             }
             return View(rootFolder);
         }
@@ -49,9 +52,15 @@ namespace PicturesASP.Controllers
         [HttpPost]
         public IActionResult CreateFolder(string currentFolder, string name)
         {
-            string path = env.WebRootPath + "\\" + currentFolder + "\\" + name;
-            var newFolder = Directory.CreateDirectory(path);
-
+            try
+            {
+                string path = env.WebRootPath + "\\" + currentFolder + "\\" + name;
+                var newFolder = Directory.CreateDirectory(path);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.StackTrace);
+            }
             return RedirectToAction("Index", "Home", new { path = currentFolder });
         }
 
@@ -61,44 +70,53 @@ namespace PicturesASP.Controllers
         {
             try
             {
-                foreach (var file in files)
+                foreach (var file in files.Where(f => DisplayUtils.IsImageFile(f.FileName)))
                 {
-                    if (!ImageUtils.IsImageFile(file.FileName))
-                    {
-                        continue;
-                    }
-
-                    string fileName = Path.GetFileName(file.FileName);
-                    fileName = ImageUtils.RenameDuplicates(env, currentFolder, fileName);
-                    string filePath = env.WebRootPath + "\\" + currentFolder + "\\" + fileName;
-
-                    using (var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
-                    {
-                        await file.CopyToAsync(fileStream);
-                    }
-
+                    imageProcessor.SaveImage(file, env, currentFolder);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine(ex.StackTrace);
                 return View(new Folder { CurrentFolder = currentFolder });
             }
 
             return RedirectToAction("Index", "Home", new { path = currentFolder });
         }
 
+        //delete the image and remain in the same folder view
         public IActionResult DeleteImage(string currentFolder, string link)
         {
-            string filePath = env.WebRootPath + "\\" + link;
-            System.IO.File.Delete(filePath);
+            try
+            {
+                string filePath = env.WebRootPath + "\\" + link;
+                System.IO.File.Delete(filePath);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.StackTrace);
+            }
+
             return RedirectToAction("Index", "Home", new { path = currentFolder });
         }
 
+        //delete the folder and return to root view
         public IActionResult DeleteFolder(string folderPath, string currentFolder)
         {
-            string path = env.WebRootPath + "\\" + folderPath;
-            Directory.Delete(path, true);
+            try
+            {
+                string path = env.WebRootPath + "\\" + folderPath;
 
+                //check if folder is empty before delete. skip delete if not
+                if (!Directory.EnumerateFileSystemEntries(path).Any())
+                {
+                    Directory.Delete(path, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.StackTrace);
+            }
             return RedirectToAction("Index", "Home", new { path = currentFolder });
         }
     }

@@ -1,19 +1,17 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace PicturesASP.Models
 {
     public class Folder
     {
+        //name of the folder
         public string Name { get; set; }
-        public string UrlName { get; set; }
+
+        //full url of the current folder, no webroot
         public string CurrentFolder { get; set; }
-        public string Parent { get; set; }
-        public string CoverImage { get; set; }
-        public bool HasChildren { get; set; }
+
+        //full url of the parent folder, no webroot
+        public string Parent { get; set; }    
         public List<Folder> SubFolders { get; set; }
         public List<Image> Images { get; set; }
 
@@ -23,7 +21,7 @@ namespace PicturesASP.Models
         {
             Name = name;
             Parent = parent;
-            UrlName = parent + "\\" + name;
+            CurrentFolder = parent + "\\" + name;
         }
     }
 }

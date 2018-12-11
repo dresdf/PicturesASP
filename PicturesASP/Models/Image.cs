@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace PicturesASP.Models
+﻿namespace PicturesASP.Models
 {
     public class Image
     {
+        //file name
         public string Name { get; set; }
+
+        //disk address, without webroot
         public string Link { get; set; }
+
+        //folder containing the file
         public string ParentFolder { get; set; }
-        public string DisplayLink { get; set; }
 
         public Image() { }
 

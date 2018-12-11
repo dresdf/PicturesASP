@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
 
     //show image in modal
-    $('.thumbnails a').click(function () {
+    $('.thumbnails .photoImg').click(function () {
         var name = $(this).find('img').attr('src');
 
         $('.item img').attr('src', name);
