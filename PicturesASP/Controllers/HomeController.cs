@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using PicturesASP.Models;
 using PicturesASP.Utils;
 using System;
@@ -15,17 +16,19 @@ namespace PicturesASP.Controllers
     {
         private readonly IHostingEnvironment env;
         private readonly ImageProcessor imageProcessor;
+        private readonly IConfiguration conf;
 
-        public HomeController(IHostingEnvironment environment, ImageProcessor imgProc)
+        public HomeController(IHostingEnvironment environment, ImageProcessor imgProc, IConfiguration Configuration)
         {
             this.env = environment;
             this.imageProcessor = imgProc;
+            this.conf = Configuration;
         }
 
         [HttpGet]
         public IActionResult Index(string path)
         {
-            string root = "gallery";
+            string root = conf["gallery"];
 
             Folder rootFolder = new Folder();
             if (String.IsNullOrEmpty(path))
