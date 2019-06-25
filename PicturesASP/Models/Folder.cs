@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 
 namespace PicturesASP.Models
 {
@@ -21,7 +22,7 @@ namespace PicturesASP.Models
         {
             Name = name;
             Parent = parent;
-            CurrentFolder = parent + "\\" + name;
+            CurrentFolder= Path.Combine(parent, name);
         }
     }
 }

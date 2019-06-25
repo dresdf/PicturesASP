@@ -39,25 +39,25 @@ namespace PicturesASP.Controllers
             }
             else
             {
-                string dirPath = env.WebRootPath + "\\" + path;
-                string rootName = new DirectoryInfo(dirPath).Name;
+                string dirPath = Path.Combine(env.WebRootPath, path);
+                DirectoryInfo dirInfo = new DirectoryInfo(dirPath);
+
+                string rootName = dirInfo.Name;
                 string parent = "";
                 if (!rootName.Equals(root))
                 {
-                    parent = path.Replace("\\" + rootName, "");
+                    string directoryName = Path.GetDirectoryName(dirPath);
+                    parent = directoryName.Substring(directoryName.IndexOf(root));
                     rootFolder = new Folder(rootName, parent);
                 }
                 else
                 {
-                    parent = path.Replace("\\", "");
                     rootFolder = new Folder()
                     {
                         Name = rootName,
                         CurrentFolder = rootName
                     };
                 }
-
-
 
                 rootFolder.SubFolders = DisplayUtils.GetFolders(env, path);
                 rootFolder.Images = DisplayUtils.GetDisplayImages(env, path);
@@ -72,7 +72,7 @@ namespace PicturesASP.Controllers
         {
             try
             {
-                string path = env.WebRootPath + "\\" + currentFolder + "\\" + name;
+                string path = Path.Combine(env.WebRootPath, currentFolder, name);
                 var newFolder = Directory.CreateDirectory(path);
             }
             catch (Exception ex)
@@ -107,7 +107,7 @@ namespace PicturesASP.Controllers
         {
             try
             {
-                string filePath = env.WebRootPath + "\\" + link;
+                string filePath = Path.Combine(env.WebRootPath, link);
                 System.IO.File.Delete(filePath);
             }
             catch (Exception ex)
@@ -123,7 +123,7 @@ namespace PicturesASP.Controllers
         {
             try
             {
-                string path = env.WebRootPath + "\\" + folderPath;
+                string path = Path.Combine(env.WebRootPath, folderPath);
 
                 //check if folder is empty before delete. skip delete if not
                 if (!Directory.EnumerateFileSystemEntries(path).Any())

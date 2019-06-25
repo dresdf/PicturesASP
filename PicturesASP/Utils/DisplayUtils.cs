@@ -17,7 +17,7 @@ namespace PicturesASP.Utils
             List<Folder> result = new List<Folder>();
             try
             {
-                string link = env.WebRootPath + "\\" + path;
+                string link = Path.Combine(env.WebRootPath, path);
                 var folders = Directory.EnumerateDirectories(link);
                 foreach (var item in folders)
                 {
@@ -50,7 +50,7 @@ namespace PicturesASP.Utils
             List<Image> images = new List<Image>();
             try
             {
-                string folderUrl = env.WebRootPath + "\\" + dirUrlName;
+                string folderUrl = Path.Combine(env.WebRootPath, dirUrlName);
                 var folder = Directory.EnumerateFiles(folderUrl);
                 foreach (var item in folder)
                 {
@@ -73,8 +73,8 @@ namespace PicturesASP.Utils
         public static string RenameDuplicates(IHostingEnvironment env, string currentFolder, string fileName)
         {
             string ret = fileName;
-            string filePath = env.WebRootPath + "\\" + currentFolder + "\\" + fileName;
-            var folderFiles = Directory.EnumerateFiles(env.WebRootPath + "\\" + currentFolder);
+            string filePath = Path.Combine(env.WebRootPath, currentFolder, fileName);
+            var folderFiles = Directory.EnumerateFiles(Path.Combine(env.WebRootPath, currentFolder));
             foreach (string item in folderFiles)
             {
                 if (item.Equals(filePath))
