@@ -7,27 +7,21 @@
 
     @if (!Model.CurrentFolder.Equals("gallery"))
     {
-        <a asp-action="Index" asp-controller="Home" asp-route-path="@Model.Parent" class="backLink"><span class="fas fa-backward"></span> @Model.Parent.ToUpperInvariant()</a>
+        <div class="backLink">
+            <a asp-action="Index" asp-controller="Home" asp-route-path="@Model.Parent"><span class="fas fa-backward"></span> @Model.Parent.ToUpperInvariant()</a>
+            <div class="text-right">
+                <a class="btn btn-success btn-xs button-right" href="#" data-toggle="modal" data-target="#modal_addFolder"><span class="fa fa-plus"></span> Add Folder</a>
+                <a class="btn btn-success btn-xs button-right" href="#" data-toggle="modal" data-target="#modal_uploadImage"><span class="fa fa-plus"></span> Upload Image</a>
+            </div>
+        </div>
     }
 
     <div class="admin">
+
         <table style="width:100%;">
             <tr>
-                <td>
-                    <form class="tagCreate" asp-action="CreateFolder" asp-controller="Home" method="post">
-                        <div asp-validation-summary="All" class="text-danger"></div>
-                        <input id="current-folder" asp-for="CurrentFolder" value="@Model.CurrentFolder" hidden />
-                        <input asp-for="Name" value="" required placeholder="Folder name" />
-                        <input type="submit" value="Create Folder" />
-                    </form>
-                </td>
-                <td>
-                    <form class="tagUpload" asp-action="UploadImages" asp-controller="Home" method="post" enctype="multipart/form-data">
-                        <input id="current-folder" asp-for="CurrentFolder" value="@Model.CurrentFolder" hidden />
-                        <input type="file" id="files" aria-label="Upload photo" name="files" required multiple accept="image/*" />
-                        <input type="submit" data-progress="Uploading..." id="btnfiles" value="Upload File" />
-                    </form>
-                </td>
+                <td></td>
+                <td></td>
             </tr>
         </table>
     </div>
@@ -68,6 +62,39 @@
                     <img src="" style="height:400px;" class="img-responsive">
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_addFolder" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form class="tagCreate" asp-action="CreateFolder" asp-controller="Home" method="post">
+                <div class="modal-body">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <input id="current-folder" asp-for="CurrentFolder" value="@Model.CurrentFolder" hidden />
+                    <input asp-for="Name" value="" required placeholder="Folder name" />
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-primary" value="Create Folder" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_uploadImage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form class="tagUpload" asp-action="UploadImages" asp-controller="Home" method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <input id="current-folder" asp-for="CurrentFolder" value="@Model.CurrentFolder" hidden />
+                    <input type="file" id="files" aria-label="Upload photo" name="files" required multiple accept="image/*" />
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-primary" data-progress="Uploading..." id="btnfiles" value="Upload File" />
+                </div>
+            </form>
         </div>
     </div>
 </div>

@@ -41,12 +41,27 @@ namespace PicturesASP.Controllers
             {
                 string dirPath = env.WebRootPath + "\\" + path;
                 string rootName = new DirectoryInfo(dirPath).Name;
-                string parent = path.Replace("\\" + rootName, "");
-                rootFolder = new Folder(rootName, parent)
+                string parent = "";
+                if (!rootName.Equals(root))
                 {
-                    SubFolders = DisplayUtils.GetFolders(env, path),
-                    Images = DisplayUtils.GetDisplayImages(env, path),
-                };
+                    parent = path.Replace("\\" + rootName, "");
+                    rootFolder = new Folder(rootName, parent);
+                }
+                else
+                {
+                    parent = path.Replace("\\", "");
+                    rootFolder = new Folder()
+                    {
+                        Name = rootName,
+                        CurrentFolder = rootName
+                    };
+                }
+
+
+
+                rootFolder.SubFolders = DisplayUtils.GetFolders(env, path);
+                rootFolder.Images = DisplayUtils.GetDisplayImages(env, path);
+
             }
             return View(rootFolder);
         }

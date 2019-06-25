@@ -34,7 +34,6 @@
 .admin {
     margin: 40px 0 20px 0;
     padding: 10px;
-    background: lightgray;
     border-radius: 5px;
     position: relative;
 }
@@ -54,14 +53,14 @@
         .admin input[type=file] {
             background: lightgray;
             border: none;
-            display: inline;
+            display: block;
         }
 
-        .admin input[type=submit] {
+        /*.admin input[type=submit] {
             background-color: #1377d0;
             color: white;
             cursor: pointer;
-        }
+        }*/
 
         .admin input[disabled] {
             background-color: #999;
@@ -72,14 +71,6 @@
     .admin form {
         display: block;
     }
-
-.tagCreate {
-    background-color: red;
-}
-
-.tagUpload {
-    background-color: green;
-}
 
 .tagCreate:before {
     content: "Create New Folder";
@@ -120,10 +111,9 @@
 
 .backLink {
     font-weight: bold;
-    font-size:larger;
+    font-size: larger;
     display: block;
     padding: 10px 10px;
     border-radius: 3px;
-    background-color:azure;
+    background-color: azure;
 }
-
