@@ -7,6 +7,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace PicturesASP
 {
@@ -14,15 +15,37 @@ namespace PicturesASP
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            var config = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .Build();
+
+            try
+            {
+                Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(config)
+                .WriteTo.Trace()
+                .CreateLogger();
+
+                Log.Information("Getting the motors running...");
+                CreateWebHostBuilder(args).Build().Run();
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Host terminated unexpectedly");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
+
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>()
-                .Build();
+                .UseSerilog();
     }
 }

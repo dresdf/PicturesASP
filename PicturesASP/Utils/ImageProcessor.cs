@@ -17,8 +17,7 @@ namespace PicturesASP.Utils
         {
             string fileName = Path.GetFileName(file.FileName);
             fileName = DisplayUtils.RenameDuplicates(env, currentFolder, fileName);
-            string filePath = env.WebRootPath + "\\" + currentFolder + "\\" + fileName;
-            //string filePath = Path.Combine(env.WebRootPath, currentFolder, fileName);
+            string filePath = Path.Combine(env.WebRootPath, currentFolder, fileName);
 
             var format = GetFormat(filePath);
 

@@ -29,12 +29,7 @@ namespace PicturesASP
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddSingleton<ImageProcessor>();
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            }).AddCookie();
+            services.AddSingleton<ImageProcessor>();            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

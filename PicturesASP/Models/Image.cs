@@ -1,4 +1,6 @@
-﻿namespace PicturesASP.Models
+﻿using System.IO;
+
+namespace PicturesASP.Models
 {
     public class Image
     {
@@ -17,7 +19,7 @@
         {
             Name = name;
             ParentFolder = parentFolder;
-            Link = parentFolder + "\\" + name; //DO NOT prefix link with WebRoothPath. Error in VS
+            Link = Path.Combine(parentFolder, name); //DO NOT prefix link with WebRoothPath. Error in VS
         }
     }
 }

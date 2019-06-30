@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using PicturesASP.Models;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -58,7 +59,11 @@ namespace PicturesASP.Utils
                     images.Add(img);
                 }
             }
-            catch (DirectoryNotFoundException) { return images; }
+            catch (DirectoryNotFoundException ex)
+            {
+                Log.Error(ex.StackTrace);
+                return images;
+            }
             return images;
         }
 

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using PicturesASP.Models;
 using PicturesASP.Utils;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -77,14 +78,14 @@ namespace PicturesASP.Controllers
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex.StackTrace);
+                Log.Error(ex.StackTrace);
             }
             return RedirectToAction("Index", "Home", new { path = currentFolder });
         }
 
         //create and save images. Redirect to folder view
         [HttpPost]
-        public async Task<IActionResult> UploadImages(string currentFolder, ICollection<IFormFile> files)
+        public IActionResult UploadImages(string currentFolder, ICollection<IFormFile> files)
         {
             try
             {
@@ -95,7 +96,7 @@ namespace PicturesASP.Controllers
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex.StackTrace);
+                Log.Error(ex.StackTrace);
                 return View(new Folder { CurrentFolder = currentFolder });
             }
 
@@ -112,7 +113,7 @@ namespace PicturesASP.Controllers
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex.StackTrace);
+                Log.Error(ex.StackTrace);
             }
 
             return RedirectToAction("Index", "Home", new { path = currentFolder });
@@ -133,7 +134,7 @@ namespace PicturesASP.Controllers
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex.StackTrace);
+                Log.Error(ex.StackTrace);
             }
             return RedirectToAction("Index", "Home", new { path = currentFolder });
         }
